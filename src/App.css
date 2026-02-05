@@ -1,0 +1,86 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+}
+
+/* Button Styles */
+button {
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Form Styling */
+.ant-input,
+.ant-input-password,
+.ant-input-number {
+    border-radius: 6px !important;
+    font-size: 14px;
+}
+
+.ant-input:focus,
+.ant-input-password:focus {
+    border-color: #1890ff !important;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2) !important;
+}
+
+/* Card Styling */
+.ant-card {
+    border-radius: 8px;
+    border: 1px solid #e8e8e8;
+    transition: all 0.3s ease;
+}
+
+.ant-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px);
+}
+
+/* Label Styling */
+label {
+    font-weight: 500;
+    color: #333;
+}
+
+/* Error Messages */
+.ant-form-item-explain-error {
+    color: #ff4d4f;
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+/* Input Status */
+.ant-input-status-error,
+.ant-input-password-status-error {
+    border-color: #ff4d4f !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 32px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+}
