@@ -5,28 +5,35 @@ import * as Yup from "yup";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../provider/AuthContext";
 
-
 const { Title, Text } = Typography;
 
-
+// Validation Schema
 const schema = Yup.object({
-    email: Yup.string().email().required(),
-    password: Yup.string().min(6).required(),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
 });
 
 export default function Login() {
     const { login } = useAuth();
     const navigate = useNavigate();
 
-
     const { control, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
 
+    // Role-based login
     const onSubmit = (data) => {
         const role = data.email === "admin@gmail.com" ? "admin" : "user";
+
+        // Save user in context
         login({ email: data.email, role });
-        navigate("/");
+
+        // Redirect based on role
+        if (role === "admin") {
+            navigate("/admin");   // Admin dashboard
+        } else {
+            navigate("/");        // Regular user home
+        }
     };
 
     return (
@@ -46,11 +53,13 @@ export default function Login() {
                     boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
                 }}
             >
+                {/* Title */}
                 <div style={{ textAlign: 'center', marginBottom: 24 }}>
                     <Title level={2} style={{ padding: '10px', margin: '16px 0 8px' }}>Welcome Back</Title>
                     <Text type="secondary">Sign in to your account</Text>
                 </div>
 
+                {/* Root error */}
                 {errors.root && (
                     <Alert
                         type="error"
@@ -60,7 +69,9 @@ export default function Login() {
                     />
                 )}
 
+                {/* Login Form */}
                 <form onSubmit={handleSubmit(onSubmit)}>
+                    {/* Email */}
                     <div style={{ marginBottom: 16 }}>
                         <label style={{ fontWeight: '500', marginBottom: 8, display: 'block' }}>Email</label>
                         <Controller
@@ -81,6 +92,7 @@ export default function Login() {
                         )}
                     </div>
 
+                    {/* Password */}
                     <div style={{ marginBottom: 24 }}>
                         <label style={{ fontWeight: '500', marginBottom: 8, display: 'block' }}>Password</label>
                         <Controller
@@ -100,11 +112,30 @@ export default function Login() {
                         )}
                     </div>
 
-                    <button type="submit" style={{ width: '100%', marginTop: 24, padding: '10px 16px', background: '#1890ff', color: '#fff', border: 'none', borderRadius: 6, fontSize: 16, fontWeight: 600, cursor: 'pointer', transition: 'all 0.3s ease' }} onMouseEnter={(e) => e.target.style.background = '#0050b3'} onMouseLeave={(e) => e.target.style.background = '#1890ff'}>
+                    {/* Submit Button */}
+                    <button
+                        type="submit"
+                        style={{
+                            width: '100%',
+                            marginTop: 24,
+                            padding: '10px 16px',
+                            background: '#1890ff',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: 6,
+                            fontSize: 16,
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease'
+                        }}
+                        onMouseEnter={(e) => e.target.style.background = '#0050b3'}
+                        onMouseLeave={(e) => e.target.style.background = '#1890ff'}
+                    >
                         Login
                     </button>
                 </form>
 
+                {/* Signup link */}
                 <p style={{ marginTop: 30, fontSize: 14, textAlign: 'center', color: '#666' }}>
                     Don't have an account? <Link to="/signup" style={{ color: '#1890ff', fontWeight: 600 }}>Sign up here</Link>
                 </p>

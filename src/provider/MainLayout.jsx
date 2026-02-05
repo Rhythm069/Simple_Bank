@@ -6,7 +6,7 @@ import {
     PhoneOutlined,
     LogoutOutlined,
     DashboardOutlined,
-    CreditCardOutlined, // <- For Transactions
+    CreditCardOutlined,
 } from "@ant-design/icons";
 
 import { Link, Outlet, useNavigate } from "react-router-dom";
@@ -26,32 +26,43 @@ export default function MainLayout() {
 
     return (
         <Layout style={{ minHeight: "100vh" }}>
-
             {/* ================= HEADER / NAVBAR ================= */}
             <Header
                 style={{
                     display: "flex",
                     alignItems: "center",
+                    justifyContent: "space-between",
                     background: "linear-gradient(90deg, #0f2027, #203a43, #2c5364)",
-                    padding: "0 40px",
+                    padding: "0 20px",
                     position: "sticky",
                     top: 0,
                     zIndex: 1000,
                 }}
             >
-
-                {/* Logo */}
-                <h2
-                    style={{
-                        color: "white",
-                        marginRight: 40,
-                        fontWeight: "bold",
-                        cursor: "pointer",
-                    }}
-                    onClick={() => navigate("/")}
-                >
-                    MyBank
-                </h2>
+               
+                <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                    <div
+                        style={{
+                            width: 40,
+                            height: 40,
+                            borderRadius: 6,
+                            background: "rgba(255,255,255,0.08)",
+                            cursor: "pointer",
+                        }}
+                        onClick={() => navigate(user?.role === "admin" ? "/admin" : "/")}
+                    />
+                    <h2
+                        style={{
+                            color: "white",
+                            fontWeight: "bold",
+                            cursor: "pointer",
+                            margin: 0,
+                        }}
+                        onClick={() => navigate(user?.role === "admin" ? "/admin" : "/")}
+                    >
+                        MyBank
+                    </h2>
+                </div>
 
                 {/* Menu */}
                 <Menu
@@ -62,15 +73,17 @@ export default function MainLayout() {
                         flex: 1,
                         background: "transparent",
                         borderBottom: "none",
+                        marginLeft: 40,
                     }}
                 >
+                    {/* Home - only for non-admin users */}
+                    {user?.role !== "admin" && (
+                        <Menu.Item key="1" icon={<HomeOutlined />}>
+                            <Link to="/">Home</Link>
+                        </Menu.Item>
+                    )}
 
-                    {/* Home */}
-                    <Menu.Item key="1" icon={<HomeOutlined />}>
-                        <Link to="/">Home</Link>
-                    </Menu.Item>
-
-                    {/* About (Scroll) */}
+                    {/* About */}
                     <Menu.Item key="2" icon={<InfoCircleOutlined />}>
                         <a href="#about" style={{ color: "inherit" }}>
                             About Us
@@ -82,10 +95,20 @@ export default function MainLayout() {
                         <Link to="/contact">Contact</Link>
                     </Menu.Item>
 
-                    {/* Transactions */}
-                    <Menu.Item key="6" icon={<CreditCardOutlined />}>
-                        <Link to="/transactions">Transactions</Link>
-                    </Menu.Item>
+                    {/* Transactions - only for users */}
+                    {user?.role !== "admin" && (
+                        <Menu.Item
+                            key="6"
+                            icon={<CreditCardOutlined />}
+                            style={{ transition: "all 0.3s" }}
+                            onMouseEnter={(e) => (e.currentTarget.style.background = "#1890ff")}
+                            onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                        >
+                            <Link to="/transactions" style={{ color: "white" }}>
+                                Transactions
+                            </Link>
+                        </Menu.Item>
+                    )}
 
                     {/* Profile */}
                     {user && (
@@ -94,13 +117,12 @@ export default function MainLayout() {
                         </Menu.Item>
                     )}
 
-                    {/* Admin */}
+                    {/* Admin - only for admin */}
                     {user?.role === "admin" && (
                         <Menu.Item key="5" icon={<DashboardOutlined />}>
                             <Link to="/admin">Admin</Link>
                         </Menu.Item>
                     )}
-
                 </Menu>
 
                 {/* Logout Button */}
@@ -114,7 +136,6 @@ export default function MainLayout() {
                         Logout
                     </Button>
                 )}
-
             </Header>
 
             {/* ================= MAIN CONTENT ================= */}
@@ -140,10 +161,13 @@ export default function MainLayout() {
                     marginTop: "80px",
                 }}
             >
-                <p style={{ margin: 0 }}>© {new Date().getFullYear()} MyBank | Secure Digital Banking System</p>
-                <p style={{ margin: "8px 0 0 0", fontSize: 12, opacity: 0.8 }}>Protecting Your Financial Future</p>
+                <p style={{ margin: 0 }}>
+                    © {new Date().getFullYear()} MyBank | Secure Digital Banking System
+                </p>
+                <p style={{ margin: "8px 0 0 0", fontSize: 12, opacity: 0.8 }}>
+                    Protecting Your Financial Future
+                </p>
             </Footer>
-
         </Layout>
     );
 }
