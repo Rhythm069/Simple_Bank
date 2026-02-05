@@ -17,23 +17,43 @@ export default function Login() {
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    const { control, handleSubmit, formState: { errors } } = useForm({
+    // Form Hook
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+        setError,
+    } = useForm({
         resolver: yupResolver(schema),
     });
 
-    // Role-based login
+    // Role-based login with real admin
     const onSubmit = (data) => {
-        const role = data.email === "admin@gmail.com" ? "admin" : "user";
+        const ADMIN_EMAIL = "admin@gmail.com";
+        const ADMIN_PASSWORD = "admin123";
 
-        // Save user in context
-        login({ email: data.email, role });
-
-        // Redirect based on role
-        if (role === "admin") {
-            navigate("/admin");   // Admin dashboard
-        } else {
-            navigate("/");        // Regular user home
+        // Check admin
+        if (data.email === ADMIN_EMAIL) {
+            if (data.password === ADMIN_PASSWORD) {
+                login({ email: data.email, role: "admin" });
+                navigate("/admin"); // go to admin dashboard
+                return;
+            } else {
+                // Wrong admin password
+                setError("root", { message: "Invalid admin password" });
+                return;
+            }
         }
+
+        // Regular user login
+        if (data.password.length >= 6) {
+            login({ email: data.email, role: "user" });
+            navigate("/"); // go to user home
+            return;
+        }
+
+        // Catch-all
+        setError("root", { message: "Invalid email or password" });
     };
 
     return (
