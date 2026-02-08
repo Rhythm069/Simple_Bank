@@ -92,7 +92,7 @@ export default function Home() {
                     <Col xs={24} md={6}>
                         <Card>
                             <h4>🤝 Support</h4>
-                            <p>24/7 customer service</p>
+                            <p>24/7 customer service k xa hajur </p>
                         </Card>
                     </Col>
                 </Row>
