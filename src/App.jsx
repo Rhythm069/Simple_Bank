@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./provider/AuthContext";
 import MainLayout from "./provider/MainLayout";
 import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import Signup from "./pages/signup";
 import Home from "./pages/Home";
 import Transactions from "./pages/Transactions";
 import Admin from "./pages/Admin";
